@@ -1,6 +1,7 @@
 # Overview
 This terraform module will deploy a chef server ha cluster, with 3 backends and one or more frontend
-Supported platform families:
+
+### Supported platform families:
  * Debian
  * SLES
  * RHEL
@@ -30,8 +31,8 @@ module "chef_ha_cluster" {
 |fronten_ips|A list of ip addresses where the chef server will be installed|list|[]|no|
 |frontend_node_count|The number of chef server instances being created|number|1|no|
 |ssh_user_name|The ssh user name used to access the ip addresses provided|string||yes|
-|ssh_user_pass|The ssh user password used to access the ip addresses|string|""|no|
-|ssh_user_private_key|The ssh user key used to access the ip addresses|string|""|no|
+|ssh_user_pass|The ssh user password used to access the ip addresses (either ssh_user_pass or ssh_user_private_key needs to be set)|string|""|no|
+|ssh_user_private_key|The ssh user key used to access the ip addresses (either ssh_user_pass or ssh_user_private_key needs to be set)|string|""|no|
 |postgresql_superuser_password|Password for the postgres superuser|string||yes|
 |postgresql_replication_password|Postgres replication user password|string||yes|
 |etcd_initial_cluster_token|etcd cluster token|string||yes|

@@ -39,13 +39,13 @@ variable "ssh_user_name" {
 }
 
 variable "ssh_user_pass" {
-  description = "The ssh user password used to access the ip addresses"
+  description = "The ssh user password used to access the ip addresses (either ssh_user_pass or ssh_user_private_key needs to be set)"
   type        = string
   default     = ""
 }
 
 variable "ssh_user_private_key" {
-  description = "The ssh user key used to access the ip addresses"
+  description = "The ssh user key used to access the ip addresses (either ssh_user_pass or ssh_user_private_key needs to be set)"
   type        = string
   default     = ""
 }
@@ -119,7 +119,7 @@ variable "backend_install_version" {
 variable "frontend_install_version" {
   description = "The version of chef server to install"
   type        = string
-  default     = "12.19.31"
+  default     = "13.0.17"
 }
 
 variable "accept_license" {

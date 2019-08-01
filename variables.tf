@@ -1,198 +1,241 @@
 ########### connection details ##################
 
 variable "bootstrap_node_ip" {
-  type    = string
+  description = "IP address of the backedend node to bootstrap from"
+  type        = string
 }
 
 variable "bootstrap_node_count" {
-  default = 1
+  description = "The number of bootstrap backend nodes being created, should only ever be 1"
+  type        = number
+  default     = 1
 }
 
 variable "backend_ips" {
-  type    = list(string)
+  description = "A list of ip addresses where the chef backends will be installed"
+  type        = list(string)
 }
 
 variable "backend_node_count" {
-  default = 2
+  description = "The number of chef backend instances being created, should only ever be 2"
+  type        = number
+  default     = 2
 }
 
 variable "frontend_ips" {
-  type    = list(string)
+  description = "A list of ip addresses where the chef server will be installed"
+  type        = list(string)
 }
 
 variable "frontend_node_count" {
-  default = 1
+  description = "The number of chef server instances being created"
+  type        = number
+  default     = 1
 }
 
 variable "ssh_user_name" {
-  type    = string
-  default = "chefuser"
+  description = "The ssh user name used to access the ip addresses provided"
+  type        = string
 }
 
 variable "ssh_user_pass" {
-  type    = string
-  default = "P@55w0rd1"
+  description = "The ssh user password used to access the ip addresses"
+  type        = string
+  default     = ""
 }
 
 variable "ssh_user_private_key" {
-  type    = string
-  default = ""
+  description = "The ssh user key used to access the ip addresses"
+  type        = string
+  default     = ""
 }
 
 ############ cookbook and run list data #########
 
 variable "backend_cookbooks" {
-  default = {
+  description = "the cookbooks used to deploy chef backend"
+  default     = {
     "chef_backend_wrapper" = "github: 'devoptimist/chef_backend_wrapper', tag: 'v0.1.10'",
-    "chef-ingredient" = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.1.1'"
+    "chef-ingredient"      = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.1.1'"
   }
 }
 
 variable "frontend_cookbooks" {
-  default = {
+  description = "the cookbooks used to deploy chef server"
+  default     = {
     "chef_server_wrapper" = "github: 'devoptimist/chef_server_wrapper', tag: 'v0.1.45'",
-    "chef-ingredient" = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.1.1'"
+    "chef-ingredient"     = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.1.1'"
   }
 }
 
 variable "backend_runlist" {
-  type    = list
-  default = ["chef_backend_wrapper::default"]
+  description = "The chef run list used to deploy chef backend"
+  type        = list
+  default     = ["chef_backend_wrapper::default"]
 }
 
 variable "frontend_runlist" {
-  type    = list
-  default = ["chef_server_wrapper::default"]
+  description = "The chef run list used to deploy chef server"
+  type        = list
+  default     = ["chef_server_wrapper::default"]
 }
+
 ############ cluster secrets ####################
 
 variable "postgresql_superuser_password" {
-  type = string
+  description = "Password for the postgres superuser"
+  type        = string
 }
 
 variable "postgresql_replication_password" {
-  type = string
+  description = "Postgres replication user password"
+  type        = string
 }
 
 variable "etcd_initial_cluster_token" {
-  type = string
+  description = "etcd cluster token"
+  type        = string
 }
 
 variable "elasticsearch_cluster_name" {
-  type = string
+  description = "elasticsearch cluster name"
+  type        = string
 }
 
 ############ chef attributes ####################
 
 variable "channel" {
-  type    = string
-  default = "stable"
+  description = "The install channel to use for the chef server and backend package"
+  type        = string
+  default     = "stable"
 }
 
 variable "backend_install_version" {
-  type    = string
-  default = "2.0.30"
+  description = "The version of chef backend to install"
+  type        = string
+  default     = "2.0.30"
 }
 
 variable "frontend_install_version" {
-  type    = string
-  default = "12.19.31"
+  description = "The version of chef server to install"
+  type        = string
+  default     = "12.19.31"
 }
 
 variable "accept_license" {
-  default = true
+  description = "Shall we accept the chef product license"
+  default     = true
 }
 
 variable "extra_backend_config" {
-  type    = string
-  default = ""
+  description = "Extra config to be passed to a chef server"
+  type        = string
+  default     = ""
 }
 
 variable "extra_frontend_config" {
-  type    = string
-  default = ""
+  description = "Extra config to be passed to a chef backends"
+  type        = string
+  default     = ""
 }
 
 variable "peers" {
-  type    = string
-  default = ""
+  description = "The private ip address of the bootstrapped backend node"
+  type        = string
+  default     = ""
 }
 
 variable "fqdn" {
-  type    = string
-  default = ""
+  description = "no longer used"
+  type        = string
+  default     = ""
 }
 
 variable "frontend_config_dir" {
-  type    = string
-  default = "/root/fe_confg"
+  description = "directory where the frontend configs are stored on the bootstrap node"
+  type        = string
+  default     = "/root/fe_confg"
 }
 
 variable "frontend_config_details" {
-  type    = string
-  default = "/root/fe_confg/fe_details.json"
+  description = "The location of the json file containing all the frontends config"
+  type        = string
+  default     = "/root/fe_confg/fe_details.json"
 }
 
 variable "frontend_parser_script" {
-  type    = string
-  default = "/bin/fe_parser"
+  description = "location of the script used to parse the frontend config"
+  type        = string
+  default     = "/bin/fe_parser"
 }
 
 variable "jq_url" {
-  type    = string
-  default = "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64"
+  description = "A web location to pull the jq binary from, jq is used to prep data for the install"
+  type        = string
+  default     = "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64"
 }
 
 variable "data_collector_url" {
-  type    = list(string)
-  default = []
+  description = "The url to a data collector (automate) end point"
+  type        = list(string)
+  default     = []
 }
 
 variable "data_collector_token" {
-  type    = list(string)
-  default = []
+  description = "The token used to access the data collector end point"
+  type        = list(string)
+  default     = []
 }
 
 variable "frontend_addons" {
-  type    = map
-  default = {}
+  description = "Any addons to be installed should be included in this map"
+  type        = map
+  default     = {}
 }
 
 variable "supermarket_url" {
-  type    = list(string)
-  default = []
+  description = "Use this to configure the chef server to talk to a supermarket instance"
+  type        = list(string)
+  default     = []
 }
 
 variable "frontend_private_ips" {
-  type    = list(string)
+  description = "List of the private ip's of each frontend server"
+  type        = list(string)
 }
 
 variable "frontend_users" {
-  type    = map(object({ serveradmin=bool, first_name=string, last_name=string, email=string, password=string }))
-  default = {}
+  description = "A map of users to be added to the chef server and their details"
+  type        = map(object({ serveradmin=bool, first_name=string, last_name=string, email=string, password=string }))
+  default     = {}
 }
 
 variable "frontend_orgs" {
-  type    = map(object({ admins=list(string), org_full_name=string }))
-  default = {}
+  description = "A map of organisations to be added to the chef server"
+  type        = map(object({ admins=list(string), org_full_name=string }))
+  default     = {}
 }
 
 variable "frontend_fqdns" {
-  type    = list(string)
-  default = []
+  description = "A list of fully qualified host names to apply to each chef server being created"
+  type        = list(string)
+  default     = []
 }
 
 variable "frontend_certs" {
-  type    = list(string)
-  default = []
+  description = "A list of ssl certificates to apply to each chef server"
+  type        = list(string)
+  default     = []
 }
 
 variable "frontend_cert_keys" {
-  type    = list(string)
-  default = []
+  description = "A list of ssl private keys to apply to each chef server"
+  type        = list(string)
+  default     = []
 }
 
 variable "force_frontend_chef_run" {
-  type    = string
-  default = "default"
+  description = "Set to anything other than default to force a rerun of provisioning on all chef frontends"
+  type        = string
+  default     = "default"
 }

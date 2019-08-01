@@ -66,59 +66,58 @@ locals {
 }
 
 module "bootstrap_node_setup" {
-  source               = "/home/steveb/workspace/terraform/modules/devoptimist/terraform-chef-policyfile"
-  ips                  = [var.bootstrap_node_ip]
-  instance_count       = 1
-  dna                  = [local.dna_bootstrap_node_setup]
-  module_inputs        = local.module_inputs
-  cookbooks            = var.backend_cookbooks
-  runlist              = var.backend_runlist
-  ssh_user_name        = var.ssh_user_name
-  ssh_user_pass        = var.ssh_user_pass
-  ssh_user_private_key = var.ssh_user_private_key
+  source           = "/home/steveb/workspace/terraform/modules/devoptimist/terraform-chef-policyfile"
+  ips              = [var.bootstrap_node_ip]
+  instance_count   = 1
+  dna              = [local.dna_bootstrap_node_setup]
+  module_inputs    = local.module_inputs
+  cookbooks        = var.backend_cookbooks
+  runlist          = var.backend_runlist
+  user_name        = var.ssh_user_name
+  user_pass        = var.ssh_user_pass
+  user_private_key = var.ssh_user_private_key
 }
 
 module "backend_nodes_setup_0" {
-  source               = "/home/steveb/workspace/terraform/modules/devoptimist/terraform-chef-policyfile"
-  ips                  = [var.backend_ips[0]]
-  instance_count       = 1
-  dna                  = [local.dna_backend_nodes_setup]
-  module_inputs        = local.module_inputs
-  cookbooks            = var.backend_cookbooks
-  runlist              = var.backend_runlist
-  hook_data            = jsonencode(module.bootstrap_node_setup.module_hook)
-  ssh_user_name        = var.ssh_user_name
-  ssh_user_pass        = var.ssh_user_pass
-  ssh_user_private_key = var.ssh_user_private_key
+  source           = "/home/steveb/workspace/terraform/modules/devoptimist/terraform-chef-policyfile"
+  ips              = [var.backend_ips[0]]
+  instance_count   = 1
+  dna              = [local.dna_backend_nodes_setup]
+  module_inputs    = local.module_inputs
+  cookbooks        = var.backend_cookbooks
+  runlist          = var.backend_runlist
+  hook_data        = jsonencode(module.bootstrap_node_setup.module_hook)
+  user_name        = var.ssh_user_name
+  user_pass        = var.ssh_user_pass
+  user_private_key = var.ssh_user_private_key
 }
 
 module "backend_nodes_setup_1" {
-  source               = "/home/steveb/workspace/terraform/modules/devoptimist/terraform-chef-policyfile"
-  ips                  = [var.backend_ips[1]]
-  instance_count       = 1
-  dna                  = [local.dna_backend_nodes_setup]
-  module_inputs        = local.module_inputs
-  cookbooks            = var.backend_cookbooks
-  runlist              = var.backend_runlist
-  hook_data            = jsonencode(module.backend_nodes_setup_0.module_hook)
-  ssh_user_name        = var.ssh_user_name
-  ssh_user_pass        = var.ssh_user_pass
-  ssh_user_private_key = var.ssh_user_private_key
+  source           = "/home/steveb/workspace/terraform/modules/devoptimist/terraform-chef-policyfile"
+  ips              = [var.backend_ips[1]]
+  instance_count   = 1
+  dna              = [local.dna_backend_nodes_setup]
+  module_inputs    = local.module_inputs
+  cookbooks        = var.backend_cookbooks
+  runlist          = var.backend_runlist
+  hook_data        = jsonencode(module.backend_nodes_setup_0.module_hook)
+  user_name        = var.ssh_user_name
+  user_pass        = var.ssh_user_pass
+  user_private_key = var.ssh_user_private_key
 }
 
 module "bootstrap_frontend_config" {
-  source               = "/home/steveb/workspace/terraform/modules/devoptimist/terraform-chef-policyfile"
-  ips                  = [var.bootstrap_node_ip]
-  instance_count       = 1
-  dna                  = [local.dna_frontend_details]
-  module_inputs        = local.module_inputs
-  cookbooks            = var.backend_cookbooks
-  runlist              = var.backend_runlist
-  hook_data            = jsonencode(module.backend_nodes_setup_1.module_hook)
-  ssh_user_name        = var.ssh_user_name
-  ssh_user_pass        = var.ssh_user_pass
-  ssh_user_private_key = var.ssh_user_private_key
-
+  source           = "/home/steveb/workspace/terraform/modules/devoptimist/terraform-chef-policyfile"
+  ips              = [var.bootstrap_node_ip]
+  instance_count   = 1
+  dna              = [local.dna_frontend_details]
+  module_inputs    = local.module_inputs
+  cookbooks        = var.backend_cookbooks
+  runlist          = var.backend_runlist
+  hook_data        = jsonencode(module.backend_nodes_setup_1.module_hook)
+  user_name        = var.ssh_user_name
+  user_pass        = var.ssh_user_pass
+  user_private_key = var.ssh_user_private_key
 }
 
 data "external" "chef_frontend_details" {

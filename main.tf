@@ -67,7 +67,7 @@ locals {
 
 module "bootstrap_node_setup" {
   source           = "devoptimist/policyfile/chef"
-  version          = "0.0.3"
+  version          = "0.0.7"
   ips              = [var.bootstrap_node_ip]
   instance_count   = 1
   dna              = [local.dna_bootstrap_node_setup]
@@ -77,11 +77,12 @@ module "bootstrap_node_setup" {
   user_name        = var.ssh_user_name
   user_pass        = var.ssh_user_pass
   user_private_key = var.ssh_user_private_key
+  timeout          = var.timeout
 }
 
 module "backend_nodes_setup_0" {
   source           = "devoptimist/policyfile/chef"
-  version          = "0.0.3"
+  version          = "0.0.7"
   ips              = [var.backend_ips[0]]
   instance_count   = 1
   dna              = [local.dna_backend_nodes_setup]
@@ -92,11 +93,12 @@ module "backend_nodes_setup_0" {
   user_name        = var.ssh_user_name
   user_pass        = var.ssh_user_pass
   user_private_key = var.ssh_user_private_key
+  timeout          = var.timeout
 }
 
 module "backend_nodes_setup_1" {
   source           = "devoptimist/policyfile/chef"
-  version          = "0.0.3"
+  version          = "0.0.7"
   ips              = [var.backend_ips[1]]
   instance_count   = 1
   dna              = [local.dna_backend_nodes_setup]
@@ -107,11 +109,12 @@ module "backend_nodes_setup_1" {
   user_name        = var.ssh_user_name
   user_pass        = var.ssh_user_pass
   user_private_key = var.ssh_user_private_key
+  timeout          = var.timeout
 }
 
 module "bootstrap_frontend_config" {
   source           = "devoptimist/policyfile/chef"
-  version          = "0.0.3"
+  version          = "0.0.7"
   ips              = [var.bootstrap_node_ip]
   instance_count   = 1
   dna              = [local.dna_frontend_details]
@@ -122,6 +125,7 @@ module "bootstrap_frontend_config" {
   user_name        = var.ssh_user_name
   user_pass        = var.ssh_user_pass
   user_private_key = var.ssh_user_private_key
+  timeout          = var.timeout
 }
 
 data "external" "chef_frontend_details" {
@@ -140,7 +144,7 @@ data "external" "chef_frontend_details" {
 
 module "frontend_bootstrap" {
   source               = "devoptimist/chef-server/linux"
-  version              = "0.0.3"
+  version              = "0.0.6"
   ips                  = length(var.frontend_ips) != 0 ? slice(var.frontend_ips, 0, 1) : []
   instance_count       = 1
   config               = var.extra_frontend_config
@@ -158,11 +162,12 @@ module "frontend_bootstrap" {
   ssh_user_pass        = var.ssh_user_pass
   ssh_user_private_key = var.ssh_user_private_key
   force_run            = var.force_frontend_chef_run
+  timeout              = var.timeout
 }
 
 module "frontend_create_all" {
   source               = "devoptimist/chef-server/linux"
-  version              = "0.0.3"
+  version              = "0.0.6"
   ips                  = length(var.frontend_ips) > 1 ? slice(var.frontend_ips, 1, length(var.frontend_ips)) : []
   instance_count       = var.frontend_node_count - 1
   config               = var.extra_frontend_config
@@ -179,4 +184,5 @@ module "frontend_create_all" {
   ssh_user_private_key = var.ssh_user_private_key
   frontend_secrets     = module.frontend_bootstrap.secret_output
   force_run            = var.force_frontend_chef_run
+  timeout              = var.timeout
 }

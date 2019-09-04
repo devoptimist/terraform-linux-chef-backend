@@ -144,7 +144,7 @@ data "external" "chef_frontend_details" {
 
 module "frontend_bootstrap" {
   source               = "devoptimist/chef-server/linux"
-  version              = "0.0.7"
+  version              = "0.0.8"
   ips                  = length(var.frontend_ips) != 0 ? slice(var.frontend_ips, 0, 1) : []
   instance_count       = 1
   config               = var.extra_frontend_config
@@ -167,7 +167,7 @@ module "frontend_bootstrap" {
 
 module "frontend_create_all" {
   source               = "devoptimist/chef-server/linux"
-  version              = "0.0.7"
+  version              = "0.0.8"
   ips                  = length(var.frontend_ips) > 1 ? slice(var.frontend_ips, 1, length(var.frontend_ips)) : []
   instance_count       = var.frontend_node_count - 1
   config               = var.extra_frontend_config

@@ -67,7 +67,7 @@ locals {
 
 module "bootstrap_node_setup" {
   source           = "devoptimist/policyfile/chef"
-  version          = "0.0.7"
+  version          = "0.0.8"
   ips              = [var.bootstrap_node_ip]
   instance_count   = 1
   dna              = [local.dna_bootstrap_node_setup]
@@ -82,7 +82,7 @@ module "bootstrap_node_setup" {
 
 module "backend_nodes_setup_0" {
   source           = "devoptimist/policyfile/chef"
-  version          = "0.0.7"
+  version          = "0.0.8"
   ips              = [var.backend_ips[0]]
   instance_count   = 1
   dna              = [local.dna_backend_nodes_setup]
@@ -98,7 +98,7 @@ module "backend_nodes_setup_0" {
 
 module "backend_nodes_setup_1" {
   source           = "devoptimist/policyfile/chef"
-  version          = "0.0.7"
+  version          = "0.0.8"
   ips              = [var.backend_ips[1]]
   instance_count   = 1
   dna              = [local.dna_backend_nodes_setup]
@@ -114,7 +114,7 @@ module "backend_nodes_setup_1" {
 
 module "bootstrap_frontend_config" {
   source           = "devoptimist/policyfile/chef"
-  version          = "0.0.7"
+  version          = "0.0.8"
   ips              = [var.bootstrap_node_ip]
   instance_count   = 1
   dna              = [local.dna_frontend_details]

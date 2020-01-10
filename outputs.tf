@@ -10,6 +10,10 @@ output "chef_server_org_url" {
   value = module.frontend_bootstrap.org_url
 }
 
+output "chef_server" {
+  value = module.frontend_bootstrap
+}
+
 output "supermarket_uid" {
   value = module.frontend_bootstrap.supermarket_uid
 }

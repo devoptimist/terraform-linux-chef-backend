@@ -66,7 +66,7 @@ locals {
 }
 
 module "bootstrap_node_setup" {
-  source           = "devoptimist/policyfile/chef"
+  source           = "srb3/policyfile/chef"
   version          = "0.0.8"
   ips              = [var.bootstrap_node_ip]
   instance_count   = 1
@@ -81,7 +81,7 @@ module "bootstrap_node_setup" {
 }
 
 module "backend_nodes_setup_0" {
-  source           = "devoptimist/policyfile/chef"
+  source           = "srb3/policyfile/chef"
   version          = "0.0.8"
   ips              = [var.backend_ips[0]]
   instance_count   = 1
@@ -97,7 +97,7 @@ module "backend_nodes_setup_0" {
 }
 
 module "backend_nodes_setup_1" {
-  source           = "devoptimist/policyfile/chef"
+  source           = "srb3/policyfile/chef"
   version          = "0.0.8"
   ips              = [var.backend_ips[1]]
   instance_count   = 1
@@ -113,7 +113,7 @@ module "backend_nodes_setup_1" {
 }
 
 module "bootstrap_frontend_config" {
-  source           = "devoptimist/policyfile/chef"
+  source           = "srb3/policyfile/chef"
   version          = "0.0.8"
   ips              = [var.bootstrap_node_ip]
   instance_count   = 1
@@ -143,7 +143,7 @@ data "external" "chef_frontend_details" {
 }
 
 module "frontend_bootstrap" {
-  source               = "devoptimist/chef-server/linux"
+  source               = "srb3/chef-server/linux"
   version              = "0.0.9"
   ips                  = length(var.frontend_ips) != 0 ? slice(var.frontend_ips, 0, 1) : []
   instance_count       = 1
@@ -166,7 +166,7 @@ module "frontend_bootstrap" {
 }
 
 module "frontend_create_all" {
-  source               = "devoptimist/chef-server/linux"
+  source               = "srb3/chef-server/linux"
   version              = "0.0.9"
   ips                  = length(var.frontend_ips) > 1 ? slice(var.frontend_ips, 1, length(var.frontend_ips)) : []
   instance_count       = var.frontend_node_count - 1

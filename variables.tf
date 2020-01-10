@@ -61,7 +61,7 @@ variable "timeout" {
 variable "backend_cookbooks" {
   description = "the cookbooks used to deploy chef backend"
   default     = {
-    "chef_backend_wrapper" = "github: 'devoptimist/chef_backend_wrapper', tag: 'v0.1.10'",
+    "chef_backend_wrapper" = "github: 'srb3/chef_backend_wrapper', tag: 'v0.1.10'",
     "chef-ingredient"      = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.1.1'"
   }
 }
@@ -69,7 +69,7 @@ variable "backend_cookbooks" {
 variable "frontend_cookbooks" {
   description = "the cookbooks used to deploy chef server"
   default     = {
-    "chef_server_wrapper" = "github: 'devoptimist/chef_server_wrapper', tag: 'v0.1.45'",
+    "chef_server_wrapper" = "github: 'srb3/chef_server_wrapper', tag: 'v0.1.45'",
     "chef-ingredient"     = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.1.1'"
   }
 }

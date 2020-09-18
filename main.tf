@@ -67,7 +67,7 @@ locals {
 
 module "bootstrap_node_setup" {
   source           = "srb3/policyfile/chef"
-  version          = "0.0.8"
+  version          = "0.13.0"
   ips              = [var.bootstrap_node_ip]
   instance_count   = 1
   dna              = [local.dna_bootstrap_node_setup]
@@ -82,8 +82,8 @@ module "bootstrap_node_setup" {
 
 module "backend_nodes_setup_0" {
   source           = "srb3/policyfile/chef"
-  version          = "0.0.8"
-  ips              = [var.backend_ips[0]]
+  version          = "0.13.0"
+  ips              = length(var.backend_ips) > 0 ? [var.backend_ips[0]] : [""]
   instance_count   = 1
   dna              = [local.dna_backend_nodes_setup]
   module_inputs    = local.module_inputs
@@ -98,8 +98,8 @@ module "backend_nodes_setup_0" {
 
 module "backend_nodes_setup_1" {
   source           = "srb3/policyfile/chef"
-  version          = "0.0.8"
-  ips              = [var.backend_ips[1]]
+  version          = "0.13.0"
+  ips              = length(var.backend_ips) > 0 ? [var.backend_ips[1]] : [""]
   instance_count   = 1
   dna              = [local.dna_backend_nodes_setup]
   module_inputs    = local.module_inputs
@@ -114,7 +114,7 @@ module "backend_nodes_setup_1" {
 
 module "bootstrap_frontend_config" {
   source           = "srb3/policyfile/chef"
-  version          = "0.0.8"
+  version          = "0.13.0"
   ips              = [var.bootstrap_node_ip]
   instance_count   = 1
   dna              = [local.dna_frontend_details]
@@ -139,12 +139,12 @@ data "external" "chef_frontend_details" {
     fe_details        = var.frontend_config_details
   }
 
-  depends_on = ["module.bootstrap_frontend_config"]
+  depends_on = [module.bootstrap_frontend_config]
 }
 
 module "frontend_bootstrap" {
   source               = "srb3/chef-server/linux"
-  version              = "0.0.10"
+  version              = "0.13.0"
   ips                  = length(var.frontend_ips) != 0 ? slice(var.frontend_ips, 0, 1) : []
   instance_count       = 1
   config               = var.extra_frontend_config
@@ -167,18 +167,18 @@ module "frontend_bootstrap" {
 
 module "frontend_create_all" {
   source               = "srb3/chef-server/linux"
-  version              = "0.0.10"
+  version              = "0.13.0"
   ips                  = length(var.frontend_ips) > 1 ? slice(var.frontend_ips, 1, length(var.frontend_ips)) : []
   instance_count       = var.frontend_node_count - 1
   config               = var.extra_frontend_config
   addons               = var.frontend_addons
   config_block         = data.external.chef_frontend_details.result
-  data_collector_url   = slice([ for i in var.frontend_ips : length(var.data_collector_url) != 0 ? element(var.data_collector_url, 0) : "" ], 1, length(var.frontend_ips))
-  data_collector_token = slice([ for i in var.frontend_ips : length(var.data_collector_token) != 0 ? element(var.data_collector_token, 0) : "" ], 1, length(var.frontend_ips))
-  supermarket_url      = slice([ for i in var.frontend_ips : length(var.supermarket_url) != 0 ? index(var.frontend_ips, i) == 0 ?  element(var.supermarket_url, 0) : "" : "" ], 1, length(var.frontend_ips))
-  fqdns                = length(var.frontend_fqdns) != 0 ? slice(var.frontend_fqdns, 1, length(var.frontend_ips)) : slice(var.frontend_private_ips, 1, length(var.frontend_private_ips))
-  certs                = var.frontend_certs
-  cert_keys            = var.frontend_cert_keys
+  data_collector_url   = length(var.frontend_ips) > 0 ? slice([ for i in var.frontend_ips : length(var.data_collector_url) != 0 ? element(var.data_collector_url, 0) : "" ], 1, length(var.frontend_ips)) : [""]
+  data_collector_token = length(var.frontend_ips) > 0 ? slice([ for i in var.frontend_ips : length(var.data_collector_token) != 0 ? element(var.data_collector_token, 0) : "" ], 1, length(var.frontend_ips)) : [""]
+  supermarket_url      = length(var.frontend_ips) > 0 ? slice([ for i in var.frontend_ips : length(var.supermarket_url) != 0 ? index(var.frontend_ips, i) == 0 ?  element(var.supermarket_url, 0) : "" : "" ], 1, length(var.frontend_ips)) : [""]
+  fqdns                = length(var.frontend_fqdns) != 0 ? slice(var.frontend_fqdns, 1, length(var.frontend_ips)) : length(var.frontend_private_ips) > 0 ? slice(var.frontend_private_ips, 1, length(var.frontend_private_ips)) : [""]
+  certs                = length(var.frontend_certs) != 0 ? slice(var.frontend_certs, 1, length(var.frontend_certs)) : []
+  cert_keys            = length(var.frontend_cert_keys) != 0 ? slice(var.frontend_cert_keys, 1, length(var.frontend_cert_keys)) : []
   ssh_user_name        = var.ssh_user_name
   ssh_user_pass        = var.ssh_user_pass
   ssh_user_private_key = var.ssh_user_private_key

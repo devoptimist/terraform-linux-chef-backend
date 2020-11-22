@@ -1,0 +1,25 @@
+---
+name: default
+inputs:
+  - name: frontend_details
+    type: Hash
+  - name: node_name
+    type: String
+  - name: expected_node_name
+    type: String
+  - name: validation_client_name
+    type: String
+  - name: expected_validation_client_name
+    type: String
+  - name: validation_pem
+    type: String
+  - name: chef_frontend_base_url
+    type: String
+  - name: chef_server_org_url
+    type: String
+  - name: client_pem
+    type: String
+  - name: backend_servers_private_ip
+    type: Array
+  - name: chef_servers_private_ip
+    type: Array

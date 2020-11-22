@@ -1,0 +1,22 @@
+module "chef_backend_cluster_suse_12" {
+  source                          = "../../../examples/aws_suse_12"
+  aws_region                      = var.aws_region
+  aws_profile                     = var.aws_profile
+  aws_creds_file                  = var.aws_creds_file
+  aws_key_name                    = var.aws_key_name
+  chef_server_ingress_cidrs       = var.chef_server_ingress_cidrs
+  backend_ingress_cidrs           = var.backend_ingress_cidrs
+  ssh_user_private_key            = var.ssh_user_private_key
+  chef_server_users               = var.chef_server_users
+  chef_server_orgs                = var.chef_server_orgs
+  postgresql_superuser_password   = var.postgresql_superuser_password
+  postgresql_replication_password = var.postgresql_replication_password
+  etcd_initial_cluster_token      = var.etcd_initial_cluster_token
+  elasticsearch_cluster_name      = var.elasticsearch_cluster_name
+  backend_instance_type           = var.backend_instance_type
+  chef_server_instance_type       = var.chef_server_instance_type
+  number_of_chef_servers          = var.number_of_chef_servers
+  frontend_install_version        = var.frontend_install_version
+  backend_install_version         = var.backend_install_version
+  tags                            = var.tags
+}

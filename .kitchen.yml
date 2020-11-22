@@ -1,0 +1,25 @@
+---
+driver:
+  name: terraform
+
+provisioner:
+  name: terraform
+
+platforms:
+- name: local
+
+verifier:
+  name: terraform
+
+suites:
+  - name: aws_suse_12
+    driver:
+      name: terraform
+      command_timeout: 1800
+      root_module_directory: test/fixtures/aws_suse_12
+    verifier:
+      systems:
+        - name: default
+          backend: local
+          attrs:
+            - test/integration/aws_suse_12/attrs.yml

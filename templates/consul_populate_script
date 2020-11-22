@@ -1,0 +1,8 @@
+#!/bin/bash
+set -eux
+
+exec > ${consul_tmp_path}/consul_populate.log 2>&1
+
+curl -XPUT http://localhost:${consul_port}/v1/kv/frontend-details -d "$(cat ${data_script})"
+
+touch  "${lock_file}"

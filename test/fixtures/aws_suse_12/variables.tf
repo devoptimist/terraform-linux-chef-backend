@@ -1,0 +1,124 @@
+########### AWS settings #########################
+
+variable "aws_creds_file" {
+  description = "The path to an aws credentials file"
+  type        = string
+}
+
+variable "aws_profile" {
+  description = "The name of an aws profile to use"
+  type        = string
+  default     = "default"
+}
+
+variable "aws_region" {
+  description = "The aws region to use"
+  type        = string
+  default     = "eu-west-1"
+}
+
+variable "tags" {
+  description = "A set of tags to assign to the instances created by this module"
+  type        = map(string)
+  default     = {}
+}
+
+########### base vm settings #####################
+
+variable "aws_key_name" {
+  description = "The name of an aws key pair to use for chef automate"
+  type        = string
+}
+
+########### backend security settings ###########
+
+variable "backend_ingress_cidrs" {
+  description = "A list of CIDR's to use for allowing access to the automate vm"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+########### chef_server security settings ##############
+
+variable "chef_server_ingress_cidrs" {
+  description = "A list of CIDR's to use for allowing access to the chef_server vm"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+########### backend vm settings #################
+
+variable "backend_instance_type" {
+  description = "The name of the instance type to use for chef automate"
+  type        = string
+  default     = "t3.large"
+}
+
+########### chef_server vm settings ####################
+
+variable "number_of_chef_servers" {
+  description = "The number of chef servers to deploy"
+  type        = number
+  default     = 1
+}
+
+variable "chef_server_instance_type" {
+  description = "The name of the instance type to use for chef chef_server"
+  type        = string
+  default     = "t3.large"
+}
+
+############ chef_server install settings ###########
+
+variable "ssh_user_private_key" {
+  description = "The ssh private key used to access the chef servers and backend server"
+  type        = string
+}
+
+########## chef server config ###################
+
+variable "chef_server_addons" {
+  type    = map
+  default = {}
+}
+
+variable "frontend_install_version" {
+  type    = string
+  default = "13.1.13"
+}
+
+variable "chef_server_users" {
+  type    = map(object({ serveradmin=bool, first_name=string, last_name=string, email=string, password=string }))
+  default = {}
+}
+
+variable "chef_server_orgs" {
+  type    = map(object({ admins=list(string), org_full_name=string }))
+  default = {}
+}
+
+########### backend server config ################
+
+variable "backend_install_version" {
+  description = "The version of chef backend to install"
+  type        = string
+  default     = "2.0.30"
+}
+
+########### backend cluster secrets ##############
+
+variable "postgresql_superuser_password" {
+  type = string
+}
+
+variable "postgresql_replication_password" {
+  type = string
+}
+
+variable "etcd_initial_cluster_token" {
+  type = string
+}
+
+variable "elasticsearch_cluster_name" {
+  type = string
+}

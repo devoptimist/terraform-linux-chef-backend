@@ -1,36 +1,13 @@
 ########### connection details ##################
 
-variable "bootstrap_node_ip" {
-  description = "IP address of the backedend node to bootstrap from"
-  type        = string
-}
-
-variable "bootstrap_node_count" {
-  description = "The number of bootstrap backend nodes being created, should only ever be 1"
-  type        = number
-  default     = 1
-}
-
 variable "backend_ips" {
   description = "A list of ip addresses where the chef backends will be installed"
   type        = list(string)
 }
 
-variable "backend_node_count" {
-  description = "The number of chef backend instances being created, should only ever be 2"
-  type        = number
-  default     = 2
-}
-
 variable "frontend_ips" {
   description = "A list of ip addresses where the chef server will be installed"
   type        = list(string)
-}
-
-variable "frontend_node_count" {
-  description = "The number of chef server instances being created"
-  type        = number
-  default     = 1
 }
 
 variable "ssh_user_name" {
@@ -61,16 +38,16 @@ variable "timeout" {
 variable "backend_cookbooks" {
   description = "the cookbooks used to deploy chef backend"
   default     = {
-    "chef_backend_wrapper" = "github: 'srb3/chef_backend_wrapper', tag: 'v0.1.10'",
-    "chef-ingredient"      = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.1.1'"
+    "chef_backend_wrapper" = "github: 'srb3/chef_backend_wrapper', tag: 'v0.1.11'",
+    "chef-ingredient"      = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.2.0'"
   }
 }
 
 variable "frontend_cookbooks" {
   description = "the cookbooks used to deploy chef server"
   default     = {
-    "chef_server_wrapper" = "github: 'srb3/chef_server_wrapper', tag: 'v0.1.45'",
-    "chef-ingredient"     = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.1.1'"
+    "chef_server_wrapper" = "github: 'srb3/chef_server_wrapper', tag: 'v0.1.50'",
+    "chef-ingredient"     = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.2.0'"
   }
 }
 
@@ -119,13 +96,13 @@ variable "channel" {
 variable "backend_install_version" {
   description = "The version of chef backend to install"
   type        = string
-  default     = "2.0.30"
+  default     = "2.2.0"
 }
 
 variable "frontend_install_version" {
   description = "The version of chef server to install"
   type        = string
-  default     = "13.0.17"
+  default     = "14.0.65"
 }
 
 variable "accept_license" {
@@ -183,14 +160,14 @@ variable "jq_url" {
 
 variable "data_collector_url" {
   description = "The url to a data collector (automate) end point"
-  type        = list(string)
-  default     = []
+  type        = string
+  default     = ""
 }
 
 variable "data_collector_token" {
   description = "The token used to access the data collector end point"
-  type        = list(string)
-  default     = []
+  type        = string
+  default     = ""
 }
 
 variable "frontend_addons" {
@@ -200,9 +177,9 @@ variable "frontend_addons" {
 }
 
 variable "supermarket_url" {
-  description = "Use this to configure the chef server to talk to a supermarket instance"
-  type        = list(string)
-  default     = []
+  description = "The URL to a supermarket instance"
+  type        = string
+  default     = ""
 }
 
 variable "frontend_private_ips" {
@@ -222,26 +199,46 @@ variable "frontend_orgs" {
   default     = {}
 }
 
-variable "frontend_fqdns" {
-  description = "A list of fully qualified host names to apply to each chef server being created"
-  type        = list(string)
-  default     = []
-}
-
-variable "frontend_certs" {
-  description = "A list of ssl certificates to apply to each chef server"
-  type        = list(string)
-  default     = []
-}
-
-variable "frontend_cert_keys" {
-  description = "A list of ssl private keys to apply to each chef server"
-  type        = list(string)
-  default     = []
-}
-
-variable "force_frontend_chef_run" {
-  description = "Set to anything other than default to force a rerun of provisioning on all chef frontends"
+variable "frontend_fqdn" {
+  description = "A fully qualified host names to apply to each chef server being created"
   type        = string
-  default     = "default"
+  default     = ""
+}
+
+variable "frontend_cert" {
+  description = "An ssl certificates to apply to each chef server"
+  type        = string
+  default     = ""
+}
+
+variable "frontend_cert_key" {
+  description = "An ssl private keys to apply to each chef server"
+  type        = string
+  default     = ""
+}
+
+############ consul settings #####################
+
+variable "consul_datacenter" {
+  description = "The name of the datacenter to use for consul"
+  type        = string
+  default     = "dc1"
+}
+
+variable "consul_port" {
+  description = "The port number to use for consul"
+  type        = string
+  default     = "8500"
+}
+
+variable "consul_log_level" {
+  description = "The log level to run the consul service as"
+  type        = string
+  default     = "info"
+}
+
+variable "tmp_path" {
+  description = "The path to a tempory directory to stage the backend cluster and consul install"
+  type        = string
+  default     = "/var/tmp"
 }

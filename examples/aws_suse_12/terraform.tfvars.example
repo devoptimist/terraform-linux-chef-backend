@@ -1,0 +1,43 @@
+aws_region     = ""
+aws_profile    = ""
+aws_creds_file = ""
+aws_key_name   = ""
+
+chef_server_ingress_cidrs = []
+backend_ingress_cidrs     = []
+ssh_user_private_key      = ""
+
+chef_server_addons = {
+  "manage" = {
+    "config" = "",
+    "channel" = "stable",
+    "version" = "2.5.16"
+  }
+}
+
+tags = {}
+
+chef_server_users = {
+  "jdoe" = {
+    "serveradmin" = true,
+    "first_name"  = "Jane",
+    "last_name"   = "Doe",
+    "email"       = "jdoe@company.com"
+    "password"    = "P@55w0rd1"
+  }
+}
+  
+chef_server_orgs = {
+  "acmecorp" = {
+    "admins" = ["jdoe"],
+    "org_full_name" = "My Company"
+  }
+}
+
+postgresql_superuser_password = "lwdbOsU+Dh8fKcCbkgpoAGwQBUOQGJ/agCLR7c/wV/2Xw+d/fpgGXdQU4YT3"
+postgresql_replication_password = "oH4zQoXcYnk6r4hq5yeuLDrT0lkR5n8KUq0KLikMGhcPmfgFMSYN3ExsPnUhtVlz"
+etcd_initial_cluster_token = "chef-backend-etcd-cluster-1"
+elasticsearch_cluster_name = "chef-backend-elasticsearch-cluster"
+
+backend_instance_type             = "t3.large"
+chef_server_instance_type         = "t3.large"

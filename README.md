@@ -11,7 +11,7 @@ This terraform module will deploy a chef server ha cluster, with 3 backends and 
 ```hcl
 
 module "chef_ha_cluster" {
-  source                   = "devoptimist/chef-backend/linux"
+  source                   = "srb3/chef-backend/linux"
   version                  = "0.0.1"
   ips                      = ["172.16.0.23"]
   instance_count           = 1
@@ -93,3 +93,6 @@ frontend_orgs = {
   }
 }
 ```
+
+### Deployment Example
+For an example of the code needed to deploy the chef backend cluster please see the examples directory

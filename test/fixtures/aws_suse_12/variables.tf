@@ -88,12 +88,12 @@ variable "frontend_install_version" {
 }
 
 variable "chef_server_users" {
-  type    = map(object({ serveradmin=bool, first_name=string, last_name=string, email=string, password=string }))
+  type    = map(object({ serveradmin = bool, first_name = string, last_name = string, email = string, password = string }))
   default = {}
 }
 
 variable "chef_server_orgs" {
-  type    = map(object({ admins=list(string), org_full_name=string }))
+  type    = map(object({ admins = list(string), org_full_name = string }))
   default = {}
 }
 

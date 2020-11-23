@@ -67,7 +67,7 @@ variable "backend_egress_cidrs" {
 variable "ingress_with_cidr_blocks" {
   description = "A list of maps of security settings for the backend servers"
   type        = list(map(string))
-  default     = [
+  default = [
     {
       "from_port"   = 2379
       "to_port"     = 2380
@@ -179,12 +179,12 @@ variable "chef_server_hostname" {
 }
 
 variable "chef_server_users" {
-  type    = map(object({ serveradmin=bool, first_name=string, last_name=string, email=string, password=string }))
+  type    = map(object({ serveradmin = bool, first_name = string, last_name = string, email = string, password = string }))
   default = {}
 }
 
 variable "chef_server_orgs" {
-  type    = map(object({ admins=list(string), org_full_name=string }))
+  type    = map(object({ admins = list(string), org_full_name = string }))
   default = {}
 }
 

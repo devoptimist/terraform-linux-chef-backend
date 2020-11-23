@@ -37,7 +37,7 @@ variable "timeout" {
 
 variable "backend_cookbooks" {
   description = "the cookbooks used to deploy chef backend"
-  default     = {
+  default = {
     "chef_backend_wrapper" = "github: 'srb3/chef_backend_wrapper', tag: 'v0.1.11'",
     "chef-ingredient"      = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.2.0'"
   }
@@ -45,7 +45,7 @@ variable "backend_cookbooks" {
 
 variable "frontend_cookbooks" {
   description = "the cookbooks used to deploy chef server"
-  default     = {
+  default = {
     "chef_server_wrapper" = "github: 'srb3/chef_server_wrapper', tag: 'v0.1.50'",
     "chef-ingredient"     = "github: 'chef-cookbooks/chef-ingredient', tag: 'v3.2.0'"
   }
@@ -189,13 +189,13 @@ variable "frontend_private_ips" {
 
 variable "frontend_users" {
   description = "A map of users to be added to the chef server and their details"
-  type        = map(object({ serveradmin=bool, first_name=string, last_name=string, email=string, password=string }))
+  type        = map(object({ serveradmin = bool, first_name = string, last_name = string, email = string, password = string }))
   default     = {}
 }
 
 variable "frontend_orgs" {
   description = "A map of organisations to be added to the chef server"
-  type        = map(object({ admins=list(string), org_full_name=string }))
+  type        = map(object({ admins = list(string), org_full_name = string }))
   default     = {}
 }
 

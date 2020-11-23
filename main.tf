@@ -1,12 +1,12 @@
 locals {
 
-  consul_policyfile_name = "consul"
-  chef_backend_policyfile_name = "chef_backend"
+  consul_policyfile_name                 = "consul"
+  chef_backend_policyfile_name           = "chef_backend"
   chef_backend_fe_config_policyfile_name = "chef_backend_fe_config"
 
-  consul_tmp_path = "${var.tmp_path}/${local.consul_policyfile_name}"
+  consul_tmp_path                  = "${var.tmp_path}/${local.consul_policyfile_name}"
   consul_populate_script_lock_file = "${local.consul_tmp_path}/consul_populate.lock"
-  data_script = var.frontend_config_details
+  data_script                      = var.frontend_config_details
 
   consul_populate_script = templatefile("${path.module}/templates/consul_populate_script", {
     data_script     = var.frontend_config_details
@@ -128,7 +128,7 @@ module "bootstrap_frontend_config" {
 
 module "consul" {
   source                    = "srb3/consul/util"
-  version                   = "0.13.4"
+  version                   = "0.13.5"
   ip                        = var.backend_ips[0]
   user_name                 = var.ssh_user_name
   user_private_key          = var.ssh_user_private_key
@@ -156,7 +156,7 @@ locals {
 
 module "frontend_bootstrap" {
   source               = "srb3/chef-server/linux"
-  version              = "0.13.10"
+  version              = "0.13.11"
   ip                   = local.frontend_bootstrap_ip
   config               = var.extra_frontend_config
   addons               = var.frontend_addons
@@ -177,29 +177,29 @@ module "frontend_bootstrap" {
 
 locals {
   frontends = {
-    for x in range(1, length(var.frontend_ips)):
-      "frontends-${x}" => {
-        "ip" = var.frontend_ips[x]
-        "config" = var.extra_frontend_config,
-        "addons" = var.frontend_addons,
-        "config_block" = jsondecode(data.http.frontend_details.body),
-        "data_collector_url" = var.data_collector_url,
-        "data_collector_token" = var.data_collector_token,
-        "supermarket_url" = var.supermarket_url,
-        "fqdn" = var.frontend_fqdn != "" ? var.frontend_fqdn : var.frontend_private_ips[x]
-        "cert" = var.frontend_cert,
-        "cert_key" = var.frontend_cert_key,
-        "ssh_user_name" = var.ssh_user_name,
-        "ssh_user_pass" = var.ssh_user_pass,
-        "ssh_user_private_key" = var.ssh_user_private_key,
-        "frontend_secrets" = module.frontend_bootstrap.secret_output
-      }
+    for x in range(1, length(var.frontend_ips)) :
+    "frontends-${x}" => {
+      "ip"                   = var.frontend_ips[x]
+      "config"               = var.extra_frontend_config,
+      "addons"               = var.frontend_addons,
+      "config_block"         = jsondecode(data.http.frontend_details.body),
+      "data_collector_url"   = var.data_collector_url,
+      "data_collector_token" = var.data_collector_token,
+      "supermarket_url"      = var.supermarket_url,
+      "fqdn"                 = var.frontend_fqdn != "" ? var.frontend_fqdn : var.frontend_private_ips[x]
+      "cert"                 = var.frontend_cert,
+      "cert_key"             = var.frontend_cert_key,
+      "ssh_user_name"        = var.ssh_user_name,
+      "ssh_user_pass"        = var.ssh_user_pass,
+      "ssh_user_private_key" = var.ssh_user_private_key,
+      "frontend_secrets"     = module.frontend_bootstrap.secret_output
+    }
   }
 }
 
 module "frontend_create_all" {
   source               = "srb3/chef-server/linux"
-  version              = "0.13.10"
+  version              = "0.13.11"
   for_each             = local.frontends
   ip                   = each.value["ip"]
   config               = each.value["config"]

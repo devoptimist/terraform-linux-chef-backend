@@ -17,10 +17,10 @@ resource "random_id" "hash" {
 }
 
 locals {
-  azs            = [
-                     data.aws_availability_zones.available.names[0],
-                     data.aws_availability_zones.available.names[1]
-                   ]
+  azs = [
+    data.aws_availability_zones.available.names[0],
+    data.aws_availability_zones.available.names[1]
+  ]
 
   sg_data = {
     "backend" = {
@@ -44,29 +44,29 @@ locals {
   }
 
   backend_vm_data = {
-    for x in range(0, 3):
-      "backend-${x}" => {
-        "ami"                = module.ami.id,
-        "instance_type"      = var.backend_instance_type,
-        "key_name"           = var.aws_key_name,
-        "security_group_ids" = [module.security_group["backend"].id],
-        "subnet_ids"         = module.vpc.public_subnets,
-        "root_block_device"  = [{ volume_type = "gp2", volume_size = "40" }],
-        "public_ip_address"  = true
-      }
+    for x in range(0, 3) :
+    "backend-${x}" => {
+      "ami"                = module.ami.id,
+      "instance_type"      = var.backend_instance_type,
+      "key_name"           = var.aws_key_name,
+      "security_group_ids" = [module.security_group["backend"].id],
+      "subnet_ids"         = module.vpc.public_subnets,
+      "root_block_device"  = [{ volume_type = "gp2", volume_size = "40" }],
+      "public_ip_address"  = true
+    }
   }
 
   chef_vm_data = {
-    for x in range(0, var.number_of_chef_servers):
-      "chef-${x}" => {
-        "ami"                = module.ami.id,
-        "instance_type"      = var.chef_server_instance_type,
-        "key_name"           = var.aws_key_name,
-        "security_group_ids" = [module.security_group["chef"].id],
-        "subnet_ids"         = module.vpc.public_subnets,
-        "root_block_device"  = [{ volume_type = "gp2", volume_size = "40" }],
-        "public_ip_address"  = true
-      }
+    for x in range(0, var.number_of_chef_servers) :
+    "chef-${x}" => {
+      "ami"                = module.ami.id,
+      "instance_type"      = var.chef_server_instance_type,
+      "key_name"           = var.aws_key_name,
+      "security_group_ids" = [module.security_group["chef"].id],
+      "subnet_ids"         = module.vpc.public_subnets,
+      "root_block_device"  = [{ volume_type = "gp2", volume_size = "40" }],
+      "public_ip_address"  = true
+    }
   }
 
   vm_data = merge(local.backend_vm_data, local.chef_vm_data)
@@ -108,32 +108,32 @@ module "instance" {
   security_group_ids          = each.value["security_group_ids"]
   subnet_ids                  = each.value["subnet_ids"]
   root_block_device           = each.value["root_block_device"]
-  associate_public_ip_address = each.value["public_ip_address"] 
-  get_password_data           = lookup(each.value,"get_password_data",false)
+  associate_public_ip_address = each.value["public_ip_address"]
+  get_password_data           = lookup(each.value, "get_password_data", false)
   tags                        = var.tags
 }
 
 locals {
   backend_servers_public_ip = [
     for x in range(0, 3) :
-      module.instance["backend-${x}"].public_ip[0]
+    module.instance["backend-${x}"].public_ip[0]
   ]
 
   backend_servers_private_ip = [
     for x in range(0, 3) :
-      module.instance["backend-${x}"].private_ip[0]
+    module.instance["backend-${x}"].private_ip[0]
   ]
 
   backend_peer_ip = module.instance["backend-0"].private_ip[0]
 
   chef_servers_public_ip = [
     for x in range(0, var.number_of_chef_servers) :
-      module.instance["chef-${x}"].public_ip[0]
+    module.instance["chef-${x}"].public_ip[0]
   ]
 
   chef_servers_private_ip = [
     for x in range(0, var.number_of_chef_servers) :
-      module.instance["chef-${x}"].private_ip[0]
+    module.instance["chef-${x}"].private_ip[0]
   ]
 
   addons = var.chef_server_addons

@@ -156,7 +156,7 @@ locals {
 
 module "frontend_bootstrap" {
   source               = "srb3/chef-server/linux"
-  version              = "0.13.11"
+  version              = "0.13.12"
   ip                   = local.frontend_bootstrap_ip
   config               = var.extra_frontend_config
   addons               = var.frontend_addons
@@ -199,7 +199,7 @@ locals {
 
 module "frontend_create_all" {
   source               = "srb3/chef-server/linux"
-  version              = "0.13.11"
+  version              = "0.13.12"
   for_each             = local.frontends
   ip                   = each.value["ip"]
   config               = each.value["config"]
